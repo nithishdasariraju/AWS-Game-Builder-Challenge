@@ -32,7 +32,7 @@ Installation and Running the Game 🚀
 Clone the repository:
 bash
 Copy code
-git clone https://github.com/your-username/dash-and-dodge.git
+git clone https://github.com/nithishdasariraju/AWS-Game-Builder-Challenge.git
 Open the index.html file in your browser to start the game.
 Ensure you have an active AWS account and connect it for extended functionalities.
 Demonstration Video 🎥
