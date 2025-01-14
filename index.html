@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Dash and Dodge Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Game Rules Modal -->
+    <div id="gameRulesModal" class="modal">
+        <div class="modal-content">
+            <img src="Images/Cover_Photo.PNG" alt="Game Cover" class="cover-photo">
+            <h2>Welcome to Dash and Dodge Game!</h2>
+            <p>
+                Rules of the Game:
+                <ul>
+                    <li>Avoid obstacles by moving left or right.</li>
+                    <li>Use arrow keys to navigate your Car.</li>
+                    <li>Score points by surviving and increasing your level.</li>
+                    <li>Press the space bar to pause or resume the game.</li>
+                </ul>
+            </p>
+            <button id="startGameBtn" class="start-btn">Start Game</button>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <!-- Game Area -->
+        <div id="gameArea">
+            <!-- Lane Markings -->
+            <div class="lane left"></div> <!-- Left Lane -->
+            <div class="lane right"></div> <!-- Right Lane -->
+            <!-- Player Bike -->
+            <div id="playerBike"></div>
+
+            <!-- Scoreboard -->
+            <div id="scoreBoard">Score: 0</div>
+
+            <!-- High Score Display
+            <div id="highScoreBoard">High Score: 0</div> -->
+
+            <!-- Level Board -->
+            <div id="levelBoard">Level: 1</div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameOverModal" class="modal">
+        <div class="modal-content">
+            <h2>Game Over</h2>
+            <p id="finalScore"></p>
+            <div class="modal-buttons">
+                <button id="playAgainBtn">Play Again</button>
+                <button id="exitBtn">Exit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thank You Modal -->
+    <div id="thankYouModal" class="modal">
+        <div class="modal-content">
+            <h2>Thank You for Playing!</h2>
+            <p>Refresh the page to play again.</p>
+            <button id="closeThankYouModalBtn">Close</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
