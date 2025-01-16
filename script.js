@@ -7,6 +7,8 @@ const gameOverModal = document.getElementById("gameOverModal");
 const thankYouModal = document.getElementById("thankYouModal");
 const gameRulesModal = document.getElementById("gameRulesModal");
 const startGameBtn = document.getElementById("startGameBtn"); // Start game button
+const muteMusicBtn = document.getElementById("muteMusicBtn");
+const unmuteMusicBtn = document.getElementById("unmuteMusicBtn");
 
 let score = 0;
 let highScore = localStorage.getItem("highScore") || 0; // Retrieve high score or default to 0
@@ -21,6 +23,14 @@ let currentLevel = 1; // Initial level
 let obstacleInterval;
 let bobbingIntervalId = null; // Track the interval ID for the bobbing effect
 
+// Background music
+const backgroundMusic = new Audio("Sounds/background-music.wav");
+backgroundMusic.loop = true; // Loop the music continuously
+backgroundMusic.volume = 0.5; // Set the volume (0.0 to 1.0)
+
+// Collision sound
+const collisionSound = new Audio("Sounds/collision-sound.wav");
+collisionSound.volume = 1.0; // Set the volume (0.0 to 1.0)
 
 // Ensure modals are hidden initially
 gameOverModal.style.display = "none";
@@ -51,6 +61,26 @@ highScoreBoard.style.fontWeight = "bold";
 highScoreBoard.style.textShadow = "2px 2px 5px rgba(0, 0, 0, 0.8)";
 highScoreBoard.style.zIndex = "10";
 document.body.appendChild(highScoreBoard);
+
+// Function to play background music
+function playBackgroundMusic() {
+    backgroundMusic.play().catch((error) => {
+        console.error("Error playing background music:", error);
+    });
+}
+
+// Function to pause background music
+function pauseBackgroundMusic() {
+    backgroundMusic.pause();
+}
+
+// Function to play collision sound
+function playCollisionSound() {
+    collisionSound.currentTime = 0; // Reset the sound to the start
+    collisionSound.play().catch((error) => {
+        console.error("Error playing collision sound:", error);
+    });
+}
 
 // Game initialization function
 function initializeGame() {
@@ -189,6 +219,20 @@ const keys = {
     Space: false,
 };
 
+// Mute music
+muteMusicBtn.addEventListener("click", () => {
+    backgroundMusic.muted = true;
+    muteMusicBtn.style.display = "none";
+    unmuteMusicBtn.style.display = "inline";
+});
+
+// Unmute music
+unmuteMusicBtn.addEventListener("click", () => {
+    backgroundMusic.muted = false;
+    unmuteMusicBtn.style.display = "none";
+    muteMusicBtn.style.display = "inline";
+});
+
 // Listen for key presses to move the player
 window.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft" && playerLaneIndex > 0) {
@@ -213,12 +257,14 @@ function updatePlayerLane() {
 function togglePause() {
     isPaused = !isPaused;
     if (isPaused) {
+        pauseBackgroundMusic();
         cancelAnimationFrame(animationFrameId);
         clearInterval(obstacleInterval);
     } else {
         obstacleInterval = setInterval(() => {
             if (!isGameOver) createObstacle();
         }, 1500);
+        playBackgroundMusic();
         gameLoop();
     }
 }
@@ -281,6 +327,8 @@ function adjustSpeedAndLevel() {
 // End the game
 function endGame() {
     isGameOver = true;
+    pauseBackgroundMusic(); // Stop the background music
+    playCollisionSound(); // Play the collision sound
 
     // Stop all obstacles
     obstacles.forEach((obstacle) => obstacle.remove());
@@ -307,6 +355,7 @@ function restartGame() {
     playerLaneIndex = 1; // Reset player to the middle lane
     updatePlayerLane();
     updateDashedLinesSpeed(); // Reset dashed line speed
+    playBackgroundMusic();
     scoreBoard.textContent = `Score: ${score}`;
     levelBoard.textContent = `Level: ${currentLevel}`;
     gameOverModal.style.display = "none";
@@ -350,5 +399,6 @@ startGameBtn.addEventListener("click", () => {
     obstacleInterval = setInterval(() => {
         if (!isGameOver) createObstacle();
     }, 1500);
+    playBackgroundMusic();
     gameLoop(); // Start the game loop
 });
